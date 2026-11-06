@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "StorageConn": "UseDevelopmentStorage=true",
+    "SqlConn": "Server=(localdb)\\mssqllocaldb;Database=AgriDb;Trusted_Connection=True;"
+  }
+}

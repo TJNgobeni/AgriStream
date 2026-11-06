@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AgriStream</title>
+  <link rel="stylesheet" href="~/site.css" />
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="/">AgriStream</a>
+  <nav>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+      <a href="/Dashboard">Field dashboard</a>
+      <span class="who">@User.Identity.Name</span>
+      <form method="post" action="/Account/Logout" style="display:inline"><button class="link">Sign out</button></form>
+    }
+    else { <a href="/Account/Login">Sign in</a><a href="/Account/Register">Create account</a> }
+  </nav>
+</header>
+<main>@RenderBody()</main>
+</body>
+</html>

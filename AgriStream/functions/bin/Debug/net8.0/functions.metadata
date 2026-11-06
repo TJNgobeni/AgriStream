@@ -1,0 +1,106 @@
+[
+  {
+    "name": "ImageUploadAudit",
+    "scriptFile": "AgriStream.Functions.dll",
+    "entryPoint": "AgriStream.Functions.ImageUploadAudit.Run",
+    "language": "dotnet-isolated",
+    "properties": {
+      "IsCodeless": false
+    },
+    "bindings": [
+      {
+        "name": "blob",
+        "direction": "In",
+        "type": "blobTrigger",
+        "path": "drone-images/{name}",
+        "connection": "StorageConn",
+        "properties": {
+          "supportsDeferredBinding": "True"
+        }
+      }
+    ]
+  },
+  {
+    "name": "GetLatestTelemetry",
+    "scriptFile": "AgriStream.Functions.dll",
+    "entryPoint": "AgriStream.Functions.GetLatestTelemetry.Run",
+    "language": "dotnet-isolated",
+    "properties": {
+      "IsCodeless": false
+    },
+    "bindings": [
+      {
+        "name": "req",
+        "direction": "In",
+        "type": "httpTrigger",
+        "authLevel": "Function",
+        "methods": [
+          "get"
+        ],
+        "route": "telemetry/{fieldId}",
+        "properties": {}
+      },
+      {
+        "name": "$return",
+        "type": "http",
+        "direction": "Out"
+      }
+    ]
+  },
+  {
+    "name": "PostIrrigationCommand",
+    "scriptFile": "AgriStream.Functions.dll",
+    "entryPoint": "AgriStream.Functions.PostIrrigationCommand.Run",
+    "language": "dotnet-isolated",
+    "properties": {
+      "IsCodeless": false
+    },
+    "bindings": [
+      {
+        "name": "req",
+        "direction": "In",
+        "type": "httpTrigger",
+        "authLevel": "Function",
+        "methods": [
+          "post"
+        ],
+        "route": "irrigation",
+        "properties": {}
+      },
+      {
+        "name": "QueueMessage",
+        "direction": "Out",
+        "type": "queue",
+        "dataType": "String",
+        "queueName": "irrigation-commands",
+        "connection": "StorageConn",
+        "properties": {}
+      },
+      {
+        "name": "HttpResponse",
+        "type": "http",
+        "direction": "Out"
+      }
+    ]
+  },
+  {
+    "name": "ProcessIrrigationCommand",
+    "scriptFile": "AgriStream.Functions.dll",
+    "entryPoint": "AgriStream.Functions.ProcessIrrigationCommand.Run",
+    "language": "dotnet-isolated",
+    "properties": {
+      "IsCodeless": false
+    },
+    "bindings": [
+      {
+        "name": "message",
+        "direction": "In",
+        "type": "queueTrigger",
+        "dataType": "String",
+        "queueName": "irrigation-commands",
+        "connection": "StorageConn",
+        "properties": {}
+      }
+    ]
+  }
+]

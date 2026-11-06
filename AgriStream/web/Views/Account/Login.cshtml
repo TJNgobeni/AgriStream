@@ -1,0 +1,7 @@
+<form method="post" class="card narrow">
+  <h2>Sign in</h2>
+  @if (ViewBag.Error != null) { <p class="err">@ViewBag.Error</p> }
+  <label>Username <input name="username" required /></label>
+  <label>Password <input name="password" type="password" required /></label>
+  <button class="btn">Sign in</button>
+</form>

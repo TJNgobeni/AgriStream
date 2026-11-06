@@ -1,0 +1,10 @@
+<form method="post" class="card narrow">
+  <h2>Create account</h2>
+  @if (ViewBag.Error != null) { <p class="err">@ViewBag.Error</p> }
+  <label>Username <input name="username" required /></label>
+  <label>Password <input name="password" type="password" required /></label>
+  <label>Role
+    <select name="role"><option>Farmer</option><option>Agronomist</option><option>Admin</option></select>
+  </label>
+  <button class="btn">Create account</button>
+</form>

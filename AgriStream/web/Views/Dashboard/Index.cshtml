@@ -1,0 +1,42 @@
+@model List<TelemetryDto>
+@{ string field = ViewBag.FieldId; }
+<h2>Field dashboard</h2>
+@if (TempData["msg"] != null) { <p class="ok">@TempData["msg"]</p> }
+@if (ViewBag.Error != null) { <p class="err">@ViewBag.Error</p> }
+
+<form method="get" class="row">
+  <label>Field
+    <select name="fieldId" onchange="this.form.submit()">
+      @foreach (var f in new[] { "field-A", "field-B", "field-C" })
+      { <option value="@f" selected="@(f == field)">@f</option> }
+    </select>
+  </label>
+</form>
+
+<h3>Latest sensor readings</h3>
+<div class="scroll">
+<table>
+  <thead><tr><th>Device</th><th>Soil moisture (%)</th><th>Temperature (°C)</th><th>Recorded</th></tr></thead>
+  <tbody>
+  @foreach (var r in Model)
+  { <tr><td>@r.DeviceId</td><td>@r.SoilMoisture?.ToString("F1")</td><td>@r.Temperature?.ToString("F1")</td><td>@r.Timestamp?.ToString("yyyy-MM-dd HH:mm:ss")</td></tr> }
+  @if (!Model.Any()) { <tr><td colspan="4">No readings yet. Run the seeder to add some.</td></tr> }
+  </tbody>
+</table>
+</div>
+
+<div class="grid">
+  <form method="post" action="/Dashboard/Irrigate" class="card">
+    <h3>Start irrigation</h3>
+    <input type="hidden" name="fieldId" value="@field" />
+    <label>Device <input name="deviceId" value="sensor-001" required /></label>
+    <label>Minutes <input name="minutes" type="number" value="15" min="1" max="240" required /></label>
+    <button class="btn">Start irrigation</button>
+  </form>
+  <form method="post" action="/Dashboard/Upload" enctype="multipart/form-data" class="card">
+    <h3>Upload drone image</h3>
+    <input type="hidden" name="fieldId" value="@field" />
+    <label>Image <input type="file" name="file" accept="image/*" required /></label>
+    <button class="btn">Upload image</button>
+  </form>
+</div>
